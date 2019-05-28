@@ -3,7 +3,6 @@ import pygame; pygame.init()
 import random, time
 
 
-
 class Healthbar:
 
     """Create and control a visual healthbar, but also
