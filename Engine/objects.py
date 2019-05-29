@@ -1,4 +1,32 @@
-import pygame; import random
+import pygame
+import random
+
+
+def center_object(length):
+    """Takes the width and height of an object and returns the coordinates
+    to center it."""
+    return (length / 2) - length
+
+
+def key_test(event, key):
+    if key == "w" and event.key == pygame.K_w:
+        return True
+    if key == "a":
+        return True
+    if key == "s":
+        return True
+    if key == "d":
+        return True
+
+
+def exit_game():
+    print("Quitting Game!")
+    pygame.quit()
+    quit()
+
+
+def create_velocity(fps, pixels, seconds):
+    return pixels / (fps * seconds)
 
 
 class Window:
@@ -43,32 +71,6 @@ class Color:
         ])
 
 
-class Master:
-
-    def __init__(self):
-        pass
-    
-    def center_object(width, height):
-        """Takes the width and height of an object and returns the coordinates
-        to center it."""
-        return ((WIDTH / 2) - width, (HEIGHT / 2) - height)
-
-    def key_test(self, event, key):
-        if key == "w" and event.key == pygame.K_w:
-            return True
-        if key == "a":
-            return True
-        if key == "s":
-            return True
-        if key == "d":
-            return True
-    
-    def exit_game(self):
-        print("Quitting Game!")
-        pygame.quit()
-        quit()
-
-
 class GameObject:
 
     def __init__(
@@ -78,7 +80,12 @@ class GameObject:
         color=(0, 0, 0), size=0,
         speed=0
     ):
+
+        # Takes the window argument for the FPS
+        self.window = window
+        self.fps = self.window.fps
         
+        # Sets the height and width of the object
         self.width = width
         self.height = width
         self.initial_speed = initial_speed
@@ -90,8 +97,7 @@ class GameObject:
         self.x_change = initial_speed
         self.y_change = initial_speed
 
-        self.window = window
-        self.fps = self.window.fps
+        self.velocity = self.speed / self.fps
 
         if size > 0:
             self.width = size
@@ -99,23 +105,15 @@ class GameObject:
 
     def movement(self):
 
-        # Test if the object has reached the target point
-        try:
-            print(self.target_x, self.target_y)
-            if self.x >= self.target_x and self.y >= self.target_y:
-                print("HIT")
-                self.stop()
-        except:
-            pass
+        # TODO: Create a way to stop an object when it reaches the 
+        # desired location
 
         self.x += self.x_change
         self.y += self.y_change
     
     def vector(self, x_change, y_change):
-        # self.stop()
         self.x_change = x_change
         self.y_change = y_change
-        print(self.x_change, self.y_change)
     
     def stop(self):
         self.x_change = 0
@@ -130,27 +128,32 @@ class GameObject:
         self.update()
     
     def move_to(self, target_x, target_y, time):
-
         """Moves object towards the given target. Time is taken in seconds."""
 
-        if target_x > self.x and target_y > self.y:
-            self.x_change = (target_x - self.x) / (self.fps * time)
-            self.y_change = (target_y - self.y) / (self.fps * time)
+        self.target_x = target_x
+        self.target_y = target_y
+
+        if self.target_x > self.x and self.target_y > self.y:
+            self.x_change = (self.target_x - self.x) / (self.fps * time)
+            self.y_change = (self.target_y - self.y) / (self.fps * time)
             return
         
-        elif target_x < self.x and target_y < self.y:
-            self.x_change = (target_x - self.x) / self.fps
-            self.y_change = (target_y - self.y) / self.fps
+        elif self.target_x < self.x and self.target_y < self.y:
+            self.x_change = (self.target_x - self.x) / self.fps
+            self.y_change = (self.target_y - self.y) / self.fps
             return
 
-        elif target_x > self.x and target_y < self.y:
-            self.x_change = (target_x - self.x) / self.fps
-            self.y_change = (target_y - self.y) / self.fps
+        elif self.target_x > self.x and self.target_y < self.y:
+            self.x_change = (self.target_x - self.x) / self.fps
+            self.y_change = (self.target_y - self.y) / self.fps
             return
         
-        elif target_x < self.x and target_y > self.y:
-            self.x_change = (target_x - self.x) / self.fps
-            self.y_change = (target_y - self.y) / self.fps
+        elif self.target_x < self.x and self.target_y > self.y:
+            self.x_change = (self.target_x - self.x) / self.fps
+            self.y_change = (self.target_y - self.y) / self.fps
             return
 
+    def accelerate(self, x_change, y_change):
+        self.x_change -= x_change
+        self.y_change -= y_change
         
