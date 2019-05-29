@@ -1,29 +1,5 @@
 import pygame; import random
 
-# TITLE = "Platformer"
-# WIDTH = 1024
-# HEIGHT = 768
-# FPS = 60
-# CLOCK = pygame.time.Clock()
-
-# # Define colors
-# WHITE = (240, 240, 240)
-# BLACK = (0, 0, 0)
-# RED = (159, 0, 0)
-# GREEN = (0, 255, 0)
-# BLUE = (0, 0, 255)
-# YELLOW = (255, 255, 0)
-# DARKGREY = (40, 40, 40)
-# GRASS_GREEN = (76, 139, 58)
-# ORANGE = (243, 132, 0)
-
-
-# GAME_DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
-
-# pygame.display.set_caption(TITLE)
-
-# TILE_SIZE = 16
-
 
 class Window:
 
@@ -77,8 +53,8 @@ class Master:
         to center it."""
         return ((WIDTH / 2) - width, (HEIGHT / 2) - height)
 
-    def key_test(self, key):
-        if key == "w":
+    def key_test(self, event, key):
+        if key == "w" and event.key == pygame.K_w:
             return True
         if key == "a":
             return True
@@ -86,17 +62,30 @@ class Master:
             return True
         if key == "d":
             return True
+    
+    def exit_game(self):
+        print("Quitting Game!")
+        pygame.quit()
+        quit()
 
 
 class GameObject:
 
-    def __init__(self, window, width=10, height=10, initial_speed=0, x=0, y=0, color=(0, 0, 0), size=0):
+    def __init__(
+        self, window, width=10, 
+        height=10, initial_speed=0, 
+        x=0, y=0, 
+        color=(0, 0, 0), size=0,
+        speed=0
+    ):
+        
         self.width = width
         self.height = width
         self.initial_speed = initial_speed
         self.x = x
         self.y = y
         self.color = color
+        self.speed = speed
 
         self.x_change = initial_speed
         self.y_change = initial_speed
@@ -109,6 +98,16 @@ class GameObject:
             self.height = size
 
     def movement(self):
+
+        # Test if the object has reached the target point
+        try:
+            print(self.target_x, self.target_y)
+            if self.x >= self.target_x and self.y >= self.target_y:
+                print("HIT")
+                self.stop()
+        except:
+            pass
+
         self.x += self.x_change
         self.y += self.y_change
     
@@ -130,18 +129,28 @@ class GameObject:
         self.movement()
         self.update()
     
-    def move_to(self, target_x, target_y):
-        if target_x > self.x:
-            self.x_change = (target_x - self.x) / self.fps
-        if target_x > self.x:
-            self.x_change = (self.x - target_x) / self.fps
-        
-        if target_y < self.y:
-            self.y_change = (target_y - self.y) / self.fps
-        
-        if target_y > self.y:
-            self.y_change = (self.y - target_y) / self.fps
-        # self.x_change = abs(float(target_x - self.x) / self.fps)
-        # self.x_change = abs(float(target_y - self.y) / self.fps)
+    def move_to(self, target_x, target_y, time):
 
-        # return (self.x_change, self.y_change)
+        """Moves object towards the given target. Time is taken in seconds."""
+
+        if target_x > self.x and target_y > self.y:
+            self.x_change = (target_x - self.x) / (self.fps * time)
+            self.y_change = (target_y - self.y) / (self.fps * time)
+            return
+        
+        elif target_x < self.x and target_y < self.y:
+            self.x_change = (target_x - self.x) / self.fps
+            self.y_change = (target_y - self.y) / self.fps
+            return
+
+        elif target_x > self.x and target_y < self.y:
+            self.x_change = (target_x - self.x) / self.fps
+            self.y_change = (target_y - self.y) / self.fps
+            return
+        
+        elif target_x < self.x and target_y > self.y:
+            self.x_change = (target_x - self.x) / self.fps
+            self.y_change = (target_y - self.y) / self.fps
+            return
+
+        
