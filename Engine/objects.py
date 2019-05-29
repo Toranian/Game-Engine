@@ -28,6 +28,57 @@ def exit_game():
 def create_velocity(fps, pixels, seconds):
     return pixels / (fps * seconds)
 
+# class Point:
+
+#     """Get the distance between two points in a 2 dimensional space."""
+
+#     def __init__(self, coords=(0, 0)):
+#         self.coords = coords
+
+#     def __eq__(self, other_point):
+#         if self.coords == other_point.coords:
+#             return True
+#         else: 
+#             return False
+    
+#     def add(self, other_point):
+#         x = other_point.coords[0] + self.coords[0]
+#         y = other_point.coords[1] + self.coords[1]
+#         self.coords = (x, y)
+
+#     def __add__(self, other_point):
+#         coords = ((self.coords[0] + other_point.coords[0], self.coords[1] + other_point.coords[1]))
+#         print(coords)
+#         return Point(coords)
+
+#     def __str__(self):
+#         return "P({}, {})".format(self.coords[0], self.coords[1])
+    
+#     def distance_to(self, other_point):
+#         second_x = other_point.coords[0]
+#         second_y = other_point.coords[1]
+#         distance =  ((self.coords[0] - second_x)**2 + (self.coords[1] - second_y)**2 ) ** 0.5
+#         return distance
+
+#     @staticmethod
+#     def distance_between(x1, y1, x2, y2):
+        
+#         distance =  ((x1 - x2)**2 + (y1 - y2)**2 ) ** 0.5
+#         return distance
+
+class Formulas:
+
+    def __init__(self):
+        self.big_g = 6.67e5
+
+    def gravitational_attraction_g(self, object1, object2):
+        """Returns the FORCE OF GRAVITY. Takes in the current object and an object to be attracted to."""
+
+        return self.big_g * ((object1.mass * object2.mass) / self.distance_between(object1.x, object1.y, object2.x, object2.y)**2)
+    
+    def distance_between(self, x1, y1, x2, y2):
+        distance =  ((x1 - x2)**2 + (y1 - y2)**2 ) ** 0.5
+        return distance
 
 class Window:
 
@@ -78,7 +129,8 @@ class GameObject:
         height=10, initial_speed=0, 
         x=0, y=0, 
         color=(0, 0, 0), size=0,
-        speed=0
+        speed=0,
+        mass=0,
     ):
 
         # Takes the window argument for the FPS
@@ -97,7 +149,9 @@ class GameObject:
         self.x_change = initial_speed
         self.y_change = initial_speed
 
+        # Physical Properties
         self.velocity = self.speed / self.fps
+        self.mass = mass
 
         if size > 0:
             self.width = size
@@ -120,38 +174,47 @@ class GameObject:
         self.y_change = 0
 
     def update(self):
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(self.window.game_display, self.color, self.rect)
+        # print(self.x, self.y, self.width, self.height)
+        rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        pygame.draw.rect(self.window.game_display, self.color, rect)
 
     def run(self):
         self.movement()
         self.update()
     
-    def move_to(self, target_x, target_y, time):
+    def move_to(self, target_x, target_y, velocity=0, time=0):
         """Moves object towards the given target. Time is taken in seconds."""
 
         self.target_x = target_x
         self.target_y = target_y
 
+        if time > 0:
+            speed = self.fps * time
+        
+        if velocity > 0:
+            speed = velocity * self.fps
+
         if self.target_x > self.x and self.target_y > self.y:
-            self.x_change = (self.target_x - self.x) / (self.fps * time)
-            self.y_change = (self.target_y - self.y) / (self.fps * time)
-            return
+            self.x_change = (self.target_x - self.x) / speed
+            self.y_change = (self.target_y - self.y) / speed
         
         elif self.target_x < self.x and self.target_y < self.y:
-            self.x_change = (self.target_x - self.x) / self.fps
-            self.y_change = (self.target_y - self.y) / self.fps
-            return
+            self.x_change = (self.target_x - self.x) / speed
+            self.y_change = (self.target_y - self.y) / speed
 
         elif self.target_x > self.x and self.target_y < self.y:
-            self.x_change = (self.target_x - self.x) / self.fps
-            self.y_change = (self.target_y - self.y) / self.fps
+            self.x_change = (self.target_x - self.x) / speed
+            self.y_change = (self.target_y - self.y) / speed
             return
         
         elif self.target_x < self.x and self.target_y > self.y:
-            self.x_change = (self.target_x - self.x) / self.fps
-            self.y_change = (self.target_y - self.y) / self.fps
+            self.x_change = (self.target_x - self.x) / speed
+            self.y_change = (self.target_y - self.y) / speed
             return
+
+    def get_rect(self):
+        rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        return rect
 
     def accelerate(self, x_change, y_change):
         self.x_change -= x_change

@@ -32,3 +32,4 @@ class Control:
         if key == "d":
             if event.key == pygame.K_d:
                 return True
+    
