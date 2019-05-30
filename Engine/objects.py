@@ -1,23 +1,12 @@
 import pygame
 import random
 
+print("Object file imported correctly!")
 
-def center_object(length):
+def center(length):
     """Takes the width and height of an object and returns the coordinates
     to center it."""
-    return (length / 2) - length
-
-
-def key_test(event, key):
-    if key == "w" and event.key == pygame.K_w:
-        return True
-    if key == "a":
-        return True
-    if key == "s":
-        return True
-    if key == "d":
-        return True
-
+    return (length / 2)
 
 def exit_game():
     print("Quitting Game!")
@@ -25,51 +14,45 @@ def exit_game():
     quit()
 
 
-def create_velocity(fps, pixels, seconds):
-    return pixels / (fps * seconds)
-
-# class Point:
-
-#     """Get the distance between two points in a 2 dimensional space."""
-
-#     def __init__(self, coords=(0, 0)):
-#         self.coords = coords
-
-#     def __eq__(self, other_point):
-#         if self.coords == other_point.coords:
-#             return True
-#         else: 
-#             return False
+class Control:
     
-#     def add(self, other_point):
-#         x = other_point.coords[0] + self.coords[0]
-#         y = other_point.coords[1] + self.coords[1]
-#         self.coords = (x, y)
+    def __init__(self):
+        pass
 
-#     def __add__(self, other_point):
-#         coords = ((self.coords[0] + other_point.coords[0], self.coords[1] + other_point.coords[1]))
-#         print(coords)
-#         return Point(coords)
+    def key_down(self, event):
+        if event.type == pygame.KEYDOWN:
+            return True
+        else:
+            return False
 
-#     def __str__(self):
-#         return "P({}, {})".format(self.coords[0], self.coords[1])
+    def key_up(self, event):
+        if event.type == pygame.KEYUP:
+            return True
+        else:
+            return False
+
+    def detect_key(self, event, key):  
+        if key == "w":
+            if event.key == pygame.K_w:
+                return True
+        if key == "s":
+            if event.key == pygame.K_s:
+                return True
+        if key == "a":
+            if event.key == pygame.K_a:
+                return True
+
+        if key == "d":
+            if event.key == pygame.K_d:
+                return True
     
-#     def distance_to(self, other_point):
-#         second_x = other_point.coords[0]
-#         second_y = other_point.coords[1]
-#         distance =  ((self.coords[0] - second_x)**2 + (self.coords[1] - second_y)**2 ) ** 0.5
-#         return distance
-
-#     @staticmethod
-#     def distance_between(x1, y1, x2, y2):
-        
-#         distance =  ((x1 - x2)**2 + (y1 - y2)**2 ) ** 0.5
-#         return distance
 
 class Formulas:
 
-    def __init__(self):
+    def __init__(self, window):
+        self.window = window
         self.big_g = 6.67e5
+        self.fps = window.fps
 
     def gravitational_attraction_g(self, object1, object2):
         """Returns the FORCE OF GRAVITY. Takes in the current object and an object to be attracted to."""
@@ -79,6 +62,11 @@ class Formulas:
     def distance_between(self, x1, y1, x2, y2):
         distance =  ((x1 - x2)**2 + (y1 - y2)**2 ) ** 0.5
         return distance
+    
+    def velocity(self, pixels, seconds=1):
+        """Takes the amount of pixels to move in a given amount of seconds. Seconds is default to one."""
+        return pixels / (self.fps * seconds)
+
 
 class Window:
 
