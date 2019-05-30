@@ -14,12 +14,12 @@ width = window.width
 height = window.height
 
 # Create the player object
-player = GameObject(x=window.width/2-20, y=window.height/2-20, size=20, color=color.black, window=window, mass=1)
+player = GameObject(x=window.width/2-20, y=height-20, size=20, color=color.black, window=window, mass=1)
 player_speed = formula.velocity(150)
 
 
 # Create the particle list
-particle_list = [ GameObject(size=10, color=color.rand_color(), speed=formula.velocity(400), window=window, x=random.randint(0, width), y=random.randint(0, height)) for i in range(100) ]
+particle_list = [ GameObject(size=10, color=color.rand_color(), speed=formula.velocity(400), window=window, x=random.randint(0, width), y=random.randint(0+player.height, height)) for i in range(100) ]
 
 # Create the object to test collisions
 overlap = GameObject(size=100, color=color.orange, window=window)
@@ -35,13 +35,13 @@ while not game_exit:
         
         if control.key_down(event):
 
-            if control.detect_key(event, "w"):
-                # player.vector(0, -player_speed)
-                player.y_change -= player_speed
+            # if control.detect_key(event, "w"):
+            #     # player.vector(0, -player_speed)
+            #     player.y_change -= player_speed
             
-            if control.detect_key(event, "s"):
-                # player.vector(0, player_speed)
-                player.y_change += player_speed
+            # if control.detect_key(event, "s"):
+            #     # player.vector(0, player_speed)
+            #     player.y_change += player_speed
 
             if control.detect_key(event, "a"):
                 # player.vector(-player_speed, 0)
@@ -77,7 +77,7 @@ while not game_exit:
 
     # Draw the objects here!
     player.run()
-    overlap.run()
+    # overlap.run()
     # if overlap.collide(player):
     #     print("collision!")
     
@@ -96,6 +96,9 @@ while not game_exit:
         # Make the particles move towards the mouse
         # particle.move_to(mouse_x, mouse_y, random.uniform(0, particle.speed+5))
         particle.run()
+
+        particle.y_change = formula.velocity(100)
+
         if particle.collide(player):
             print("Game over!")
             exit_game()
