@@ -152,6 +152,8 @@ class GameObject:
         # Physical Properties
         self.velocity = self.speed / self.fps
         self.mass = mass
+        self.acceleration = 0
+        self.accelerate = False
 
         if size > 0:
             self.width = size
@@ -161,6 +163,11 @@ class GameObject:
 
         # TODO: Create a way to stop an object when it reaches the 
         # desired location
+
+        # Increases the speed by an amount every second.
+        if self.accelerate:
+            self.x_change += self.acceleration
+            self.y_change += self.acceleration
 
         self.x += self.x_change
         self.y += self.y_change
@@ -182,7 +189,7 @@ class GameObject:
         self.movement()
         self.update()
     
-    def move_to(self, target_x, target_y, velocity=0, time=0):
+    def move_to(self, target_x, target_y, velocity=0, time=1, acceleration=0):
         """Moves object towards the given target. Time is taken in seconds."""
 
         self.target_x = target_x
@@ -193,6 +200,11 @@ class GameObject:
         
         if velocity > 0:
             speed = velocity * self.fps
+        
+        if acceleration > 0:
+            self.accelerate = True
+            self.acceleration = acceleration
+            speed = self.fps * time
 
         if self.target_x > self.x and self.target_y > self.y:
             self.x_change = (self.target_x - self.x) / speed

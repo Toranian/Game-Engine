@@ -9,6 +9,8 @@ color = Color()
 window = Window(fps=fps)
 control = Control()
 formula = Formulas()
+width = window.width
+height = window.height
 
 # player = GameObject(x=window.width/2-10, y=window.height/2-10, size=20, 
 #                     color=color.black, window=window, speed=3)
@@ -27,13 +29,16 @@ large_mass = GameObject(
     window=window, speed=0.5,
     # x=random.randint(0, window.width),
     # y=random.randint(0, window.height),
-    x = window.width-100,
-    y = window.height-100,
+    x = 0,
+    y = 0,
     mass=3,
  )
 
-player_speed = create_velocity(fps, 150, 1)
+player_speed = create_velocity(fps, 200, 1)
 friction = create_velocity(fps, 75, 1)
+
+particle_list = [ GameObject(size=10, color=color.rand_color(), speed=create_velocity(fps, 145, 1), window=window, x=random.randint(0, width), y=random.randint(0, height)) for i in range(1000) ]
+
 
 print(formula.gravitational_attraction_g(player, large_mass))
 
@@ -80,20 +85,32 @@ while not game_exit:
                 # player.x_change -= friction
                 player.x_change = 0
 
-        # TODO: ADD ACCELERATION TO THE MOVEMENT CLASS!S
-        player.move_to(large_mass.x, large_mass.y, velocity=formula.gravitational_attraction_g(player, large_mass))
-        print(formula.gravitational_attraction_g(player, large_mass))
+    
 
+
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    player.move_to(mouse_x, mouse_y, velocity=player_speed)
 
     # Window needs to update first
     window.update()
 
     # Draw the objects here!
     player.run()
-    # large_mass.move_to(player.x, player.y, velocity=150)
-    large_mass.run()
-    # player.accelerate(-create_velocity(fps, 10, 1), 0)
+    
+    # particles
 
+    count = 0
+    for particle in particle_list:
+        # if count == 0:
+        #     particle.move_to(player.x, player.y)
+        
+        # else:
+        #     particle.move_to(particle_list[random.randint(0, count)].x, particle_list[random.randint(0, count)].y, particle.speed)
+        particle.move_to(random.randint(0, 1000), random.randint(0, height), particle.speed)
+
+        count += 1
+        particle.run()
+    
     pygame.display.update()
 
 
