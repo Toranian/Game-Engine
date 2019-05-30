@@ -15,7 +15,7 @@ height = window.height
 
 # Create the player object
 player = GameObject(x=window.width/2-20, y=window.height/2-20, size=20, color=color.black, window=window, mass=1)
-player_speed = formula.velocity(300)
+player_speed = formula.velocity(150)
 
 
 # Create the particle list
@@ -78,13 +78,13 @@ while not game_exit:
     # Draw the objects here!
     player.run()
     overlap.run()
-    if overlap.collide(player):
-        print("collision!")
+    # if overlap.collide(player):
+    #     print("collision!")
     
     # particles
     count = 0
     for particle in particle_list:
-        pass
+        # pass
         # Uncomment this for the particles to follow each other
         # if count == 0:
         #     particle.move_to(player.x, player.y, time=0.2)
@@ -95,9 +95,12 @@ while not game_exit:
 
         # Make the particles move towards the mouse
         # particle.move_to(mouse_x, mouse_y, random.uniform(0, particle.speed+5))
+        particle.run()
+        if particle.collide(player):
+            print("Game over!")
+            exit_game()
 
 
-        # particle.run()
     
     pygame.display.update()
 

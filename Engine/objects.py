@@ -1,7 +1,6 @@
 import pygame
 import random
 
-print("Object file imported correctly!")
 
 def center(length):
     """Takes the width and height of an object and returns the coordinates
@@ -219,9 +218,7 @@ class GameObject:
             self.y_change = (self.target_y - self.y) / speed
             return
 
-    def get_rect(self):
-        rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        return rect
+   
 
     def accelerate(self, x_change, y_change):
         self.x_change -= x_change
