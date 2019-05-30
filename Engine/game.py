@@ -4,6 +4,7 @@ from controls import *
 import pygame
 
 
+# Important variables and class instances
 fps = 120
 color = Color()
 window = Window(fps=fps)
@@ -13,16 +14,15 @@ width = window.width
 height = window.height
 
 # Create the player object
-player = GameObject(x=window.width/2-20, y=window.height/2-20, size=20, 
-                    color=color.black, window=window, mass=1)
-
-
-player_speed = formula.velocity(200)
+player = GameObject(x=window.width/2-20, y=window.height/2-20, size=20, color=color.black, window=window, mass=1)
+player_speed = formula.velocity(300)
 
 
 # Create the particle list
 particle_list = [ GameObject(size=10, color=color.rand_color(), speed=formula.velocity(400), window=window, x=random.randint(0, width), y=random.randint(0, height)) for i in range(100) ]
 
+# Create the object to test collisions
+overlap = GameObject(size=100, color=color.orange, window=window)
 
 
 game_exit = False
@@ -69,32 +69,35 @@ while not game_exit:
     
 
     # Make the player follow the mouse
-    mouse_x, mouse_y = pygame.mouse.get_pos()
-    player.move_to(mouse_x, mouse_y, time=0.3)
+    # mouse_x, mouse_y = pygame.mouse.get_pos()
+    # player.move_to(mouse_x, mouse_y, time=0.3)
 
     # Window needs to update first
     window.update()
 
     # Draw the objects here!
     player.run()
+    overlap.run()
+    if overlap.collide(player):
+        print("collision!")
     
     # particles
     count = 0
     for particle in particle_list:
-
+        pass
         # Uncomment this for the particles to follow each other
         # if count == 0:
-        #     particle.move_to(player.x, player.y, time=0.5)
+        #     particle.move_to(player.x, player.y, time=0.2)
         
         # else:
-        #     particle.move_to(particle_list[random.randint(0, count)].x, particle_list[random.randint(0, count)].y, time=0.5)
+        #     particle.move_to(particle_list[random.randint(0, count)].x, particle_list[random.randint(0, count)].y, time=0.1)
         # count += 1
 
         # Make the particles move towards the mouse
-        particle.move_to(mouse_x, mouse_y, random.uniform(0, particle.speed+5))
+        # particle.move_to(mouse_x, mouse_y, random.uniform(0, particle.speed+5))
 
 
-        particle.run()
+        # particle.run()
     
     pygame.display.update()
 

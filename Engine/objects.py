@@ -119,11 +119,14 @@ class GameObject:
         color=(0, 0, 0), size=0,
         speed=0,
         mass=0,
+        bounds=True,
     ):
 
         # Takes the window argument for the FPS
         self.window = window
         self.fps = self.window.fps
+        self.window_height = window.height
+        self.window_width = window.width
         
         # Sets the height and width of the object
         self.width = width
@@ -136,6 +139,7 @@ class GameObject:
 
         self.x_change = initial_speed
         self.y_change = initial_speed
+        self.bounds = bounds
 
         # Physical Properties
         self.velocity = self.speed / self.fps
@@ -153,6 +157,7 @@ class GameObject:
         # desired location
 
         # Increases the speed by an amount every second.
+
         if self.accelerate:
             self.x_change += self.acceleration
             self.y_change += self.acceleration
@@ -169,9 +174,11 @@ class GameObject:
         self.y_change = 0
 
     def update(self):
-        # print(self.x, self.y, self.width, self.height)
-        rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(self.window.game_display, self.color, rect)
+        if self.bounds:
+            self.test_boundary()
+
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        pygame.draw.rect(self.window.game_display, self.color, self.rect)
 
     def run(self):
         self.movement()
@@ -220,3 +227,17 @@ class GameObject:
         self.x_change -= x_change
         self.y_change -= y_change
         
+    def collide(self, other_object):
+        return self.rect.colliderect(other_object.rect)
+    
+    def test_boundary(self):
+        if self.x > self.window_width:
+            self.x = 0
+        if self.x < 0:
+            self.x = self.window_width 
+        
+        if self.y < 0:
+            self.y = self.window_height
+        if self.y > self.window_height:
+            self.y = 0
+            
