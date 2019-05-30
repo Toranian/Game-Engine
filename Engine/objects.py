@@ -230,11 +230,16 @@ class GameObject:
     def test_boundary(self):
         if self.x > self.window_width:
             self.x = 0
+            return True
+        
         if self.x < 0:
             self.x = self.window_width 
-        
+            return True
+
         if self.y < 0:
             self.y = self.window_height
+            return True
+        
         if self.y > self.window_height:
             self.y = 0
-            
+            return True
