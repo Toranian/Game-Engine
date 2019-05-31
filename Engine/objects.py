@@ -7,6 +7,7 @@ def center(length):
     to center it."""
     return (length / 2)
 
+
 def exit_game():
     print("Quitting Game!")
     pygame.quit()
@@ -175,6 +176,9 @@ class GameObject:
     def update(self):
         if self.bounds:
             self.test_boundary()
+        else:
+            if self.test_boundary():
+                self.stop()
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(self.window.game_display, self.color, self.rect)
@@ -193,7 +197,9 @@ class GameObject:
             speed = self.fps * time
         
         if velocity > 0:
+            print(velocity)
             speed = velocity * self.fps
+            print(speed)
         
         if acceleration > 0:
             self.accelerate = True
@@ -211,12 +217,13 @@ class GameObject:
         elif self.target_x > self.x and self.target_y < self.y:
             self.x_change = (self.target_x - self.x) / speed
             self.y_change = (self.target_y - self.y) / speed
-            return
+            
         
         elif self.target_x < self.x and self.target_y > self.y:
             self.x_change = (self.target_x - self.x) / speed
             self.y_change = (self.target_y - self.y) / speed
-            return
+        
+        return (self.x_change, self.y_change)
 
    
 
@@ -232,11 +239,11 @@ class GameObject:
             self.x = 0
             return True
         
-        if self.x < 0:
+        if self.x < -self.width:
             self.x = self.window_width 
             return True
 
-        if self.y < 0:
+        if self.y < -self.height:
             self.y = self.window_height
             return True
         
