@@ -32,7 +32,6 @@ while not game_exit:
         if event.type == pygame.QUIT:
             exit_game()
         
-        
         if control.key_down(event):
 
             if control.detect_key(event, "w"):
