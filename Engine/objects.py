@@ -114,7 +114,9 @@ class GameObject:
 
     def __init__(
         self, window, width=10, 
-        height=10, initial_speed=0, 
+        height=10, 
+        initial_speed_y=0, 
+        initial_speed_x=0,
         x=0, y=0, 
         color=(0, 0, 0), size=0,
         speed=0,
@@ -130,15 +132,13 @@ class GameObject:
         
         # Sets the height and width of the object
         self.width = width
-        self.height = width
-        self.initial_speed = initial_speed
+        self.height = height
         self.x = x
         self.y = y
         self.color = color
         self.speed = speed
-
-        self.x_change = initial_speed
-        self.y_change = initial_speed
+        self.x_change = initial_speed_x
+        self.y_change = initial_speed_y
         self.bounds = bounds
 
         # Physical Properties
@@ -152,12 +152,6 @@ class GameObject:
             self.height = size
 
     def movement(self):
-
-        # TODO: Create a way to stop an object when it reaches the 
-        # desired location
-
-        # Increases the speed by an amount every second.
-
         if self.accelerate:
             self.x_change += self.acceleration
             self.y_change += self.acceleration
@@ -218,14 +212,11 @@ class GameObject:
             self.x_change = (self.target_x - self.x) / speed
             self.y_change = (self.target_y - self.y) / speed
             
-        
         elif self.target_x < self.x and self.target_y > self.y:
             self.x_change = (self.target_x - self.x) / speed
             self.y_change = (self.target_y - self.y) / speed
         
         return (self.x_change, self.y_change)
-
-   
 
     def accelerate(self, x_change, y_change):
         self.x_change -= x_change
