@@ -171,8 +171,7 @@ class GameObject:
         if self.bounds:
             self.test_boundary()
         else:
-            if self.test_boundary():
-                self.stop()
+            pass
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(self.window.game_display, self.color, self.rect)
@@ -226,18 +225,38 @@ class GameObject:
         return self.rect.colliderect(other_object.rect)
     
     def test_boundary(self):
-        if self.x > self.window_width:
+        if self.x >= self.window_width:
             self.x = 0
             return True
         
-        if self.x < -self.width:
+        if self.x <= -self.width:
             self.x = self.window_width 
             return True
 
-        if self.y < -self.height:
+        if self.y <= -self.height:
             self.y = self.window_height
             return True
         
-        if self.y > self.window_height:
+        if self.y >= self.window_height:
             self.y = 0
             return True
+
+    def hit_top(self):
+        if self.y <= 0:
+            return True
+        return False
+    
+    def hit_bottom(self):
+        if self.y >= self.window_height - self.height:
+            return True
+        return False
+
+    def hit_left(self):
+        if self.x <= 0:
+            return True
+        return False
+    
+    def hit_right(self):
+        if self.x >= self.window_width - self.width:
+            return True
+        return False
