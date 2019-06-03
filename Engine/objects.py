@@ -2,6 +2,21 @@ import pygame
 import random
 
 
+def text_to_screen(screen, text, x, y, size = 50,
+            color = (200, 200, 200), font_type=pygame.font.match_font("tlwgtypist")):
+
+    pygame.font.init()
+    try:
+
+        text = str(text)
+        font = pygame.font.Font(font_type, size)
+        text = font.render(text, True, color)
+        screen.game_display.blit(text, (x, y))
+
+    except Exception as e:
+        print(e)
+        raise e
+
 def center(length):
     """Takes the width and height of an object and returns the coordinates
     to center it."""
@@ -45,6 +60,23 @@ class Control:
         if key == "d":
             if event.key == pygame.K_d:
                 return True
+        
+
+        if key == "up":
+            if event.key == pygame.K_UP:
+                return True
+        if key == "down":
+            if event.key == pygame.K_DOWN:
+                return True
+        if key == "left":
+            if event.key == pygame.K_LEFT:
+                return True
+
+        if key == "right":
+            if event.key == pygame.K_RIGHT:
+                return True
+
+        
     
 
 class Formulas:

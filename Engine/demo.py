@@ -21,7 +21,7 @@ HEIGHT = window.height
 # !!! The window paramater must be passed. It uses variables from it for calculations!!
 player_speed = formula.velocity(150) # Speed can be passed in the object, but it's done here so it's more clear
 player = GameObject(size=20, x=center(WIDTH), y=center(HEIGHT), color=color.rand_color(), window=window, speed=player_speed)
-print(player_speed)
+
 
 # Game loop time!
 game_exit = False
