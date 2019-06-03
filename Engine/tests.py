@@ -1,7 +1,5 @@
-import pygame
-import random, time
-from objects import *
+ls = [0, 1, 2, 3]
 
+del ls[-1]
 
-
-force_of_gravity = Formulas.gravitational_attraction_g(object1, object2)
+print(ls)

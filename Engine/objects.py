@@ -76,9 +76,6 @@ class Control:
             if event.key == pygame.K_RIGHT:
                 return True
 
-        
-    
-
 class Formulas:
 
     def __init__(self, window):
@@ -222,10 +219,11 @@ class GameObject:
             speed = self.fps * time
         
         if velocity > 0:
+            print("hit")
             print(velocity)
-            speed = velocity * self.fps
-            print(speed)
-        
+            print(self.fps * velocity)
+            speed = velocity * self.fps*2
+            
         if acceleration > 0:
             self.accelerate = True
             self.acceleration = acceleration
