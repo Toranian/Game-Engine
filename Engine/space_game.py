@@ -7,7 +7,7 @@ import pygame
 # Important variables and class instances
 fps = 120
 color = Color()
-window = Window(fps=fps, background_color=color.white)
+window = Window(fps=fps, background_image="./space.jpeg")
 control = Control()
 formula = Formulas(window)
 width = window.width
@@ -86,7 +86,6 @@ while not game_exit:
                 player.x_change = 0
             
         
-
     # Window needs to update first
     window.update()
 
@@ -94,30 +93,25 @@ while not game_exit:
     player.run()
 
     # particles
-    try:
-        for bullet in bullet_list:
-            # print(bullet)
-            bullet.run()
-    except Exception as e:
-        print(e)
+    
+    for bullet in bullet_list:
+        
+        bullet.run()
+    
 
     particle_count = 0
     for particle in particle_list:
-        
         particle.run()
-        try:
+        
+        # Test if the bullet collides with a particle
+        for bullet in bullet_list:
             if bullet.collide(particle):
                 del particle_list[particle_count]
                 del bullet_list[bullet_list.index(bullet)]
-        
-        except:
-            pass
-    
+ 
         particle_count += 1
 
 
-
     pygame.display.update()
-
 
 exit_game()
