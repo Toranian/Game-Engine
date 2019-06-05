@@ -209,7 +209,7 @@ class GameObject:
         self.movement()
         self.update()
     
-    def move_to(self, target_x, target_y, velocity=0, time=1, acceleration=0):
+    def move_to(self, target_x, target_y, velocity=0, time=0, acceleration=0):
         """Moves object towards the given target. Time is taken in seconds."""
 
         self.target_x = target_x
@@ -219,16 +219,14 @@ class GameObject:
             speed = self.fps * time
         
         if velocity > 0:
-            print("hit")
-            print(velocity)
-            print(self.fps * velocity)
-            speed = velocity * self.fps*2
+            speed = self.fps 
             
         if acceleration > 0:
             self.accelerate = True
             self.acceleration = acceleration
             speed = self.fps * time
 
+        speed = self.fps 
         if self.target_x > self.x and self.target_y > self.y:
             self.x_change = (self.target_x - self.x) / speed
             self.y_change = (self.target_y - self.y) / speed

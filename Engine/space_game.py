@@ -22,13 +22,12 @@ particle_speeds = [formula.velocity(-100), formula.velocity(100)]
 
 # Create the particle list
 particle_list = [ GameObject(size=20, 
-                            color=color.black, 
-                            speed=formula.velocity(400), 
+                            color=color.black,  
                             window=window, 
                             x=random.randint(0, width), 
                             y=random.randint(10+player.height, height), 
                             initial_speed_x=random.uniform(particle_speeds[0], particle_speeds[1]),
-                            initial_speed_y=random.uniform(particle_speeds[0], particle_speeds[1])
+                            initial_speed_y=random.uniform(particle_speeds[0], particle_speeds[1]),
                             ) 
                 for i in range(50) ]
 
@@ -49,39 +48,27 @@ while not game_exit:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
-                new_bullet = GameObject(x=player.x, y=player.y, size=10, color=color.red, window=window, bounds=False, speed=formula.velocity(100))
-                print("Bullet speed:", new_bullet.speed)
+                new_bullet = GameObject(x=player.x, y=player.y, size=10, color=color.red, window=window, bounds=False)
                 bullet_list.append(new_bullet)
-                new_bullet.move_to(mouse_x, mouse_y, velocity=bullet_speed)
+                new_bullet.move_to(mouse_x, mouse_y)
         
         if control.key_down(event):
-
             if control.detect_key(event, "w"):
-                # player.vector(0, -player_speed)
                 player.y_change -= player_speed
-            
             if control.detect_key(event, "s"):
-                # player.vector(0, player_speed)
                 player.y_change += player_speed
-
             if control.detect_key(event, "a"):
-                # player.vector(-player_speed, 0)
                 player.x_change -= player_speed
-
             if control.detect_key(event, "d"):
                 player.x_change += player_speed
         
         if control.key_up(event):
-
             if control.detect_key(event, "w"):
                 player.y_change = 0
-
             if control.detect_key(event, "s"):
                 player.y_change = 0
-            
             if control.detect_key(event, "a"):
                 player.x_change = 0
-
             if control.detect_key(event, "d"):
                 player.x_change = 0
             
@@ -89,33 +76,17 @@ while not game_exit:
 
     # Window needs to update first
     window.update()
-
     # Draw the objects here!
     player.run()
 
-    # particles
-    try:
-        for bullet in bullet_list:
-            # print(bullet)
-            bullet.run()
-    except Exception as e:
-        print(e)
-
-    particle_count = 0
+    # Asteroids
     for particle in particle_list:
-        
         particle.run()
-        try:
+        for bullet in bullet_list:
+            bullet.run()
             if bullet.collide(particle):
-                del particle_list[particle_count]
+                del particle_list[particle_list.index(particle)]
                 del bullet_list[bullet_list.index(bullet)]
-        
-        except:
-            pass
-    
-        particle_count += 1
-
-
 
     pygame.display.update()
 
