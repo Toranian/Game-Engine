@@ -99,31 +99,19 @@ class Formulas:
 
 class Window:
 
-    def __init__(self, width=1024, height=768, fps=60, background_color=(255, 255, 255), title="Game Window", background_image=""):
+    def __init__(self, width=1024, height=768, fps=60, background_color=(255, 255, 255), title="Game Window"):
         self.width = width
         self.height = height
         self.fps = fps
-        
+        self.background_color = background_color
         self.game_display = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.title = title
-
-        if len(background_image) > 0:
-            self.background = pygame.image.load(background_image)
-            self.image = True
-        else:
-            self.background = background_color
-            self.image = False
-
         pygame.display.set_caption(self.title)
     
     def update(self):
-        if self.image:
-            self.game_display.fill(background, (0,0))
-        else:
-            self.game_display.fill(self.background)
+        self.game_display.fill(self.background_color)
         self.clock.tick(self.fps)
-    
       
 
 class Color:
@@ -231,7 +219,7 @@ class GameObject:
             speed = self.fps * time
         
         if velocity > 0:
-            speed = velocity * self.fps
+            speed = self.fps 
             
         if acceleration > 0:
             self.accelerate = True

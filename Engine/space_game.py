@@ -7,7 +7,7 @@ import pygame
 # Important variables and class instances
 fps = 120
 color = Color()
-window = Window(fps=fps, background_color=color.white)
+window = Window(fps=fps, background_image="./space.jpeg")
 control = Control()
 formula = Formulas(window)
 width = window.width
@@ -73,22 +73,42 @@ while not game_exit:
                 player.x_change = 0
             
         
-
     # Window needs to update first
     window.update()
     # Draw the objects here!
     player.run()
 
+<<<<<<< HEAD
     # Asteroids
     for particle in particle_list:
         particle.run()
         for bullet in bullet_list:
             bullet.run()
+=======
+    # particles
+    
+    for bullet in bullet_list:
+        
+        bullet.run()
+    
+
+    particle_count = 0
+    for particle in particle_list:
+        particle.run()
+        
+        # Test if the bullet collides with a particle
+        for bullet in bullet_list:
+>>>>>>> 165f8f7310caeae6d570c89ba45705310e6da60f
             if bullet.collide(particle):
                 del particle_list[particle_list.index(particle)]
                 del bullet_list[bullet_list.index(bullet)]
+<<<<<<< HEAD
+=======
+ 
+        particle_count += 1
+
+>>>>>>> 165f8f7310caeae6d570c89ba45705310e6da60f
 
     pygame.display.update()
-
 
 exit_game()

@@ -99,31 +99,19 @@ class Formulas:
 
 class Window:
 
-    def __init__(self, width=1024, height=768, fps=60, background_color=(255, 255, 255), title="Game Window", background_image=""):
+    def __init__(self, width=1024, height=768, fps=60, background_color=(255, 255, 255), title="Game Window"):
         self.width = width
         self.height = height
         self.fps = fps
-        
+        self.background_color = background_color
         self.game_display = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.title = title
-
-        if len(background_image) > 0:
-            self.background = pygame.image.load(background_image)
-            self.image = True
-        else:
-            self.background = background_color
-            self.image = False
-
         pygame.display.set_caption(self.title)
     
     def update(self):
-        if self.image:
-            self.game_display.fill(background, (0,0))
-        else:
-            self.game_display.fill(self.background)
+        self.game_display.fill(self.background_color)
         self.clock.tick(self.fps)
-    
       
 
 class Color:
@@ -221,7 +209,7 @@ class GameObject:
         self.movement()
         self.update()
     
-    def move_to(self, target_x, target_y, velocity=0, time=0, acceleration=0):
+    def move_to(self, target_x, target_y, velocity=0, time=1, acceleration=0):
         """Moves object towards the given target. Time is taken in seconds."""
 
         self.target_x = target_x
@@ -231,14 +219,16 @@ class GameObject:
             speed = self.fps * time
         
         if velocity > 0:
-            speed = velocity * self.fps
+            print("hit")
+            print(velocity)
+            print(self.fps * velocity)
+            speed = velocity * self.fps*2
             
         if acceleration > 0:
             self.accelerate = True
             self.acceleration = acceleration
             speed = self.fps * time
 
-        speed = self.fps 
         if self.target_x > self.x and self.target_y > self.y:
             self.x_change = (self.target_x - self.x) / speed
             self.y_change = (self.target_y - self.y) / speed
