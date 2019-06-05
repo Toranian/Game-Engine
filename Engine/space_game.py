@@ -7,7 +7,7 @@ import pygame
 # Important variables and class instances
 fps = 120
 color = Color()
-window = Window(fps=fps, background_image="./space.jpeg")
+window = Window(fps=fps, background_color=color.black)
 control = Control()
 formula = Formulas(window)
 width = window.width
@@ -22,7 +22,7 @@ particle_speeds = [formula.velocity(-100), formula.velocity(100)]
 
 # Create the particle list
 particle_list = [ GameObject(size=20, 
-                            color=color.black,  
+                            color=color.white,  
                             window=window, 
                             x=random.randint(0, width), 
                             y=random.randint(10+player.height, height), 
@@ -38,6 +38,8 @@ overlap = GameObject(size=100, color=color.orange, window=window)
 bullet_list = []
 bullet_speed = formula.velocity(100)
 
+# Score
+score = 0
 
 game_exit = False
 while not game_exit:
@@ -77,18 +79,10 @@ while not game_exit:
     window.update()
     # Draw the objects here!
     player.run()
+    text_to_screen(window, score, center(width), 10, color=color.white)
 
-<<<<<<< HEAD
-    # Asteroids
-    for particle in particle_list:
-        particle.run()
-        for bullet in bullet_list:
-            bullet.run()
-=======
     # particles
-    
-    for bullet in bullet_list:
-        
+    for bullet in bullet_list:   
         bullet.run()
     
 
@@ -98,16 +92,10 @@ while not game_exit:
         
         # Test if the bullet collides with a particle
         for bullet in bullet_list:
->>>>>>> 165f8f7310caeae6d570c89ba45705310e6da60f
             if bullet.collide(particle):
                 del particle_list[particle_list.index(particle)]
                 del bullet_list[bullet_list.index(bullet)]
-<<<<<<< HEAD
-=======
- 
-        particle_count += 1
-
->>>>>>> 165f8f7310caeae6d570c89ba45705310e6da60f
+                score += 1
 
     pygame.display.update()
 

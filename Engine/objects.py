@@ -231,7 +231,7 @@ class GameObject:
             speed = self.fps * time
         
         if velocity > 0:
-            speed = velocity * self.fps
+            speed = velocity / self.fps
             
         if acceleration > 0:
             self.accelerate = True
