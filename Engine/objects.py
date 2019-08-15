@@ -174,6 +174,7 @@ class GameObject:
         mass=0,
         bounds=True,
         sprite="",
+        sprite_size=(0,0)
     ):
 
         # Takes the window argument for the FPS
@@ -193,11 +194,24 @@ class GameObject:
         self.y_change = initial_speed_y
         self.bounds = bounds
 
+        # Ignore this.
+        if size > 0:
+            self.width = size
+            self.height = size
+
         # Add an image to the object, and scale it.
         if len(sprite) > 0:
             self.image = pygame.image.load(sprite)
-            self.image = pygame.transform.scale(self.image, (self.width, self.height))
             self.display_image_background = True
+
+            # Test to resize the image
+            if sprite_size[0] > 0 and sprite_size[1] > 0:
+                self.sprite_size = sprite_size
+                self.image = pygame.transform.scale(self.image, (self.sprite_size[1], self.sprite_size[0]))
+                # print("hit")
+            else:
+                self.image = pygame.transform.scale(self.image, (self.width, self.height))
+            
         else:
             self.display_image_background = False
 
@@ -207,9 +221,7 @@ class GameObject:
         self.acceleration = 0
         self.accelerate = False
 
-        if size > 0:
-            self.width = size
-            self.height = size
+        
 
     def movement(self):
         if self.accelerate:
@@ -233,7 +245,6 @@ class GameObject:
         else:
             pass
         
-
         # Reset the rect obj
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height) 
         
