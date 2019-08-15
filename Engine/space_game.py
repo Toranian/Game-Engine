@@ -16,24 +16,31 @@ width = window.width
 height = window.height
 
 # Create the player object
-player = GameObject(x=window.width/2-20, y=height-20, size=20, color=color.orange, window=window, mass=1)
+player = GameObject(
+    x=window.width/2-20, 
+    y=height-20, size=35, 
+    sprite="spaceship.png", 
+    sprite_size=(60, 30),
+    window=window, 
+    mass=1
+    )
+
 player_speed = formula.velocity(250)
 
 
 particle_speeds = [formula.velocity(-100), formula.velocity(100)]
 
 # Create the particle list
-particle_list = [ GameObject(size=20, 
+particle_list = [ GameObject(size=50, 
                             # color=color.white,
                             sprite="asteroid.png",  
-
                             window=window, 
                             x=random.randint(0, width), 
                             y=random.randint(10+player.height, height), 
                             initial_speed_x=random.uniform(particle_speeds[0], particle_speeds[1]),
                             initial_speed_y=random.uniform(particle_speeds[0], particle_speeds[1]),
                             ) 
-                for i in range(50) ]
+                for i in range(10) ]
 
 # Create the object to test collisions
 overlap = GameObject(size=100, color=color.orange, window=window)
