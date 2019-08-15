@@ -99,29 +99,39 @@ class Formulas:
 
 class Window:
 
+    """The most crucial class. This class handles the display, size, FPS, title and more."""
+
     def __init__(self, width=1024, height=768, fps=60, background_color=(255, 255, 255), title="Game Window", background_image=""):
+        
+        # Set up the basics of the window
         self.width = width
         self.height = height
         self.fps = fps
-        
-        self.game_display = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.title = title
-
+        pygame.display.set_caption(self.title) # Set the title
+        
+        # Screen setup. This is where everything is "put"
+        self.game_display = pygame.display.set_mode((self.width, self.height))
+        
+        # Determine whether or not to display an image as a background, or a solid color.
         if len(background_image) > 0:
-            self.background = pygame.image.load(background_image)
-            self.image = True
+            self.image = pygame.image.load(background_image)
+            self.image = pygame.transform.scale(self.image, (self.width, self.height))
+            self.display_image_background = True
         else:
-            self.background = background_color
-            self.image = False
+            self.background_color = background_color
+            self.display_image_background = False
 
-        pygame.display.set_caption(self.title)
-    
+
+    # Update the window class.
     def update(self):
-        if self.image:
-            self.game_display.fill(background, (0,0))
+        if self.display_image_background:
+            self.game_display.blit(self.image, (0, 0))
+            
         else:
-            self.game_display.fill(self.background)
+            self.game_display.fill(self.background_color)
+        
         self.clock.tick(self.fps)
     
       
@@ -163,6 +173,7 @@ class GameObject:
         speed=0,
         mass=0,
         bounds=True,
+        sprite="",
     ):
 
         # Takes the window argument for the FPS
@@ -181,6 +192,14 @@ class GameObject:
         self.x_change = initial_speed_x
         self.y_change = initial_speed_y
         self.bounds = bounds
+
+        # Add an image to the object, and scale it.
+        if len(sprite) > 0:
+            self.image = pygame.image.load(sprite)
+            self.image = pygame.transform.scale(self.image, (self.width, self.height))
+            self.display_image_background = True
+        else:
+            self.display_image_background = False
 
         # Physical Properties
         self.velocity = self.speed / self.fps
@@ -213,9 +232,19 @@ class GameObject:
             self.test_boundary()
         else:
             pass
+        
 
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(self.window.game_display, self.color, self.rect)
+        # Reset the rect obj
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height) 
+        
+        # Determine whether or not to display an image or a color
+        if self.display_image_background:
+            self.window.game_display.blit(self.image, (self.x, self.y))
+        else:
+            pygame.draw.rect(self.window.game_display, self.color, self.rect)
+            
+
+
 
     def run(self):
         self.movement()
