@@ -7,7 +7,9 @@ import pygame
 # Important variables and class instances
 fps = 120
 color = Color()
-window = Window(fps=fps, background_color=color.black)
+# window = Window(fps=fps, background_color=color.black)
+window = Window(fps=fps, background_image="space.jpeg")
+
 control = Control()
 formula = Formulas(window)
 width = window.width
@@ -22,7 +24,9 @@ particle_speeds = [formula.velocity(-100), formula.velocity(100)]
 
 # Create the particle list
 particle_list = [ GameObject(size=20, 
-                            color=color.white,  
+                            # color=color.white,
+                            sprite="asteroid.png",  
+
                             window=window, 
                             x=random.randint(0, width), 
                             y=random.randint(10+player.height, height), 
