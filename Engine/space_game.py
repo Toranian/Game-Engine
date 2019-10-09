@@ -1,4 +1,4 @@
-from objects import *
+from tage import *
 import random
 # from controls import *
 import pygame

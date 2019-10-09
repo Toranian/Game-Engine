@@ -1,13 +1,20 @@
 import pygame
 import random
 
-
-def text_to_screen(screen, text, x, y, size = 50,
-            color = (200, 200, 200), font_type=pygame.font.match_font("tlwgtypist")):
+# display text to the window, given text and location.
+def text_to_screen(
+    screen, 
+    text,
+    x,
+    y, 
+    size = 50,
+    color = (200, 200, 200), 
+    font_type=pygame.font.match_font("tlwgtypist")
+    ):
 
     pygame.font.init()
+    
     try:
-
         text = str(text)
         font = pygame.font.Font(font_type, size)
         text = font.render(text, True, color)
@@ -25,7 +32,6 @@ def center(length):
 
 def exit_game():
     print("Quitting Game!")
-    pygame.quit()
     quit()
 
 

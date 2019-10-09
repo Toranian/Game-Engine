@@ -1,12 +1,14 @@
+import sys
+
+sys.path.append('../Engine/')
 from tage import *
-import pygame
+import time
+
 
 # Vital Objects and variables
 width = 1024
 height = 768
 FPS = 60
-
-init()
 
 control = Control()
 

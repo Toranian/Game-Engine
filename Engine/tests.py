@@ -1,5 +1,2 @@
-ls = [0, 1, 2, 3]
+from tage import *
 
-del ls[-1]
-
-print(ls)
