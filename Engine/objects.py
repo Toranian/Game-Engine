@@ -167,6 +167,19 @@ class Color:
         ])
 
 
+class Velocity:
+    """More advanced class for velocity"""
+    def __init__(self, window):
+        self.window = window
+        self.fps = window.fps
+
+    def velocity(self, pixels, seconds=1):
+        """Takes the amount of pixels to move in a given amount of seconds. Seconds is default to one."""
+        return pixels / (self.fps * seconds)
+    
+    def random_velocity(self, min, _max):
+        return self.velocity(random.randint(min, _max))
+
 class GameObject:
 
     def __init__(
@@ -260,9 +273,7 @@ class GameObject:
         else:
             pygame.draw.rect(self.window.game_display, self.color, self.rect)
             
-
-
-
+            
     def run(self):
         self.movement()
         self.update()
@@ -326,6 +337,7 @@ class GameObject:
         if self.y >= self.window_height:
             self.y = 0
             return True
+        return False
 
     def hit_top(self):
         if self.y <= 0:
