@@ -51,7 +51,7 @@ python-debian==0.1.27
 python-systemd==231
 pytz==2019.1
 pyxdg==0.25
-PyYAML==3.11
+PyYAML==5.1
 reportlab==3.3.0
 requests==2.21.0
 scipy==0.17.0
