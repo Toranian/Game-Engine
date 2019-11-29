@@ -29,11 +29,9 @@ def center(length):
     to center it."""
     return (length / 2)
 
-
 def exit_game():
     print("Quitting Game!")
     quit()
-
 
 class Control:
     
@@ -102,7 +100,6 @@ class Formulas:
         """Takes the amount of pixels to move in a given amount of seconds. Seconds is default to one."""
         return pixels / (self.fps * seconds)
 
-
 class Window:
 
     """The most crucial class. This class handles the display, size, FPS, title and more."""
@@ -140,8 +137,6 @@ class Window:
         
         self.clock.tick(self.fps)
     
-      
-
 class Color:
 
     def __init__(self):
@@ -155,7 +150,7 @@ class Color:
         self.grassgreen = (76, 139, 58)
         self.orange = (243, 132, 0)
     
-    def rand_color(self):
+    def random_color(self):
         return random.choice([
         self.white,
         self.black, 
@@ -165,7 +160,6 @@ class Color:
         self.yellow,
         self.orange
         ])
-
 
 class Velocity:
     """More advanced class for velocity"""
@@ -295,22 +289,27 @@ class GameObject:
             self.acceleration = acceleration
             speed = self.fps * time
 
-        speed = self.fps 
-        if self.target_x > self.x and self.target_y > self.y:
-            self.x_change = (self.target_x - self.x) / speed
-            self.y_change = (self.target_y - self.y) / speed
+        # speed = self.fps 
         
-        elif self.target_x < self.x and self.target_y < self.y:
-            self.x_change = (self.target_x - self.x) / speed
-            self.y_change = (self.target_y - self.y) / speed
-
-        elif self.target_x > self.x and self.target_y < self.y:
-            self.x_change = (self.target_x - self.x) / speed
-            self.y_change = (self.target_y - self.y) / speed
+        # Hypotenuse - Distance to target
+        r = ((self.target_x - self.x)**2 + (self.target_y - self.y)**2)**0.5
+        self.x_change = (self.target_x - self.x) / r
+        self.y_change = (self.target_y - self.y) / r
             
-        elif self.target_x < self.x and self.target_y > self.y:
-            self.x_change = (self.target_x - self.x) / speed
-            self.y_change = (self.target_y - self.y) / speed
+        # if self.target_x > self.x and self.target_y > self.y:
+        #     print("hit")
+        #     return (0, 0)
+        # elif self.target_x < self.x and self.target_y < self.y:
+        #     print("hit")
+        #     return (0, 0)
+
+        # elif self.target_x > self.x and self.target_y < self.y:
+        #     print("hit")
+        #     return (0, 0)
+            
+        # elif self.target_x < self.x and self.target_y > self.y:
+        #     print("hit")
+        #     return (0, 0)
         
         return (self.x_change, self.y_change)
 
